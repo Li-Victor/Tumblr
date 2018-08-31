@@ -2,7 +2,7 @@
 
 Tumblr is a photo browsing app using the [The Tumblr API](https://www.tumblr.com/docs/en/api/v2#posts).
 
-Time spent: **X** hours spent in total
+Time spent: 2 hours spent in total
 
 ## User Stories
 
@@ -30,9 +30,9 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+![](https://github.com/Li-Victor/Tumblr/blob/master/1.gif)
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIF created with [Giphy Capture](https://giphy.com/apps/giphycapture).
 
 ## Notes
 
