@@ -21,6 +21,10 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         photoTableView.delegate = self
         photoTableView.dataSource = self
 
+        fetchPhotos()
+    }
+    
+    func fetchPhotos() {
         let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV")!
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -28,6 +32,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         let task = session.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 print(error.localizedDescription)
+                self.displayError(error)
             } else if let data = data, let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                 
                 // Get the dictionary from the response key
@@ -37,7 +42,17 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
         task.resume()
+    }
+    
+    func displayError(_ error: Error) {
+        let alertController = UIAlertController(title: "Cannot Get Photos", message: error.localizedDescription, preferredStyle: .alert)
         
+        let TryAgainAction = UIAlertAction(title: "Try Again", style: .default) { (action) in
+            self.fetchPhotos()
+        }
+        
+        alertController.addAction(TryAgainAction)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,15 +78,5 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         
         return cell
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
