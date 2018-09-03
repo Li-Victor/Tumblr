@@ -14,6 +14,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     var posts: [[String: Any]] = []
 
     @IBOutlet weak var photoTableView: UITableView!
+    var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,13 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         photoTableView.delegate = self
         photoTableView.dataSource = self
 
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(PhotosViewController.didPullToRefresh(_:)), for: .valueChanged)
+        photoTableView.insertSubview(refreshControl, at: 0)
+        fetchPhotos()
+    }
+    
+    @objc func didPullToRefresh(_ refreshControl: UIRefreshControl) {
         fetchPhotos()
     }
     
@@ -39,6 +47,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                 let responseDictionary = dataDictionary["response"] as! [String: Any]
                 self.posts = responseDictionary["posts"] as! [[String: Any]]
                 self.photoTableView.reloadData()
+                self.refreshControl.endRefreshing()
             }
         }
         task.resume()
