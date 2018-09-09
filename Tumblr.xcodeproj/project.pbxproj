@@ -48,6 +48,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		573376912145D4A800ED8D83 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				57BAE025213789BF004480D1 /* PhotosViewController.swift */,
+				572E3DC02140BF1100608248 /* PhotoDetailsViewController.swift */,
+				57335EAD21458F0D00E89B4A /* FullScreenPhotoViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		573376922145D4BA00ED8D83 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				572B2B21213795EC00A0587E /* PhotoCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		577E418A213785B600B1BB5F = {
 			isa = PBXGroup;
 			children = (
@@ -69,16 +87,14 @@
 		577E4195213785B600B1BB5F /* Tumblr */ = {
 			isa = PBXGroup;
 			children = (
+				573376912145D4A800ED8D83 /* ViewControllers */,
+				573376922145D4BA00ED8D83 /* View */,
 				577E4196213785B600B1BB5F /* AppDelegate.swift */,
 				577E419A213785B600B1BB5F /* Main.storyboard */,
 				577E419D213785B700B1BB5F /* Assets.xcassets */,
 				577E419F213785B700B1BB5F /* LaunchScreen.storyboard */,
 				577E41A2213785B700B1BB5F /* Info.plist */,
-				57BAE025213789BF004480D1 /* PhotosViewController.swift */,
-				572B2B21213795EC00A0587E /* PhotoCell.swift */,
-				572E3DC02140BF1100608248 /* PhotoDetailsViewController.swift */,
 				575A21782144FDFB00E8B889 /* Post.swift */,
-				57335EAD21458F0D00E89B4A /* FullScreenPhotoViewController.swift */,
 			);
 			path = Tumblr;
 			sourceTree = "<group>";

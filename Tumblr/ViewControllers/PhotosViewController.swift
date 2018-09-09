@@ -10,12 +10,13 @@ import UIKit
 import AlamofireImage
 import SwiftyJSON
 
-class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
     var posts: [Post] = []
 
     @IBOutlet weak var photoTableView: UITableView!
     var refreshControl: UIRefreshControl!
+    var isMoreDataLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,5 +131,47 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func loadMorePosts() {
+        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV&offset=\(posts.count + 1)")!
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        
+        let task = session.dataTask(with: url) { (data, response, error) in
+            self.isMoreDataLoading = false
+            
+            if let error = error {
+                print(error.localizedDescription)
+                self.displayError(error)
+            } else if let data = data {
+                
+                let newPosts: [Post] = JSON(data)["response", "posts"].arrayValue.map {
+                    let photoPath = $0["photos", 0, "original_size", "url"].stringValue
+                    let date = $0["date"].stringValue
+                    return Post(photoPath: photoPath, date: date)
+                }
+                
+                self.posts += newPosts
+                
+                self.photoTableView.reloadData()
+                self.refreshControl.endRefreshing()
+            }
+        }
+        task.resume()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = photoTableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - photoTableView.bounds.size.height
+            
+            if (scrollView.contentOffset.y > scrollOffsetThreshold && photoTableView.isDragging) {
+                isMoreDataLoading = true
+                loadMorePosts()
+            }
+            
+        }
     }
 }
