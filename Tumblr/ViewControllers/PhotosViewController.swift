@@ -17,6 +17,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var photoTableView: UITableView!
     var refreshControl: UIRefreshControl!
     var isMoreDataLoading = false
+    var loadingMorePosts: InfiniteScrollActivityView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,17 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(PhotosViewController.didPullToRefresh(_:)), for: .valueChanged)
         photoTableView.insertSubview(refreshControl, at: 0)
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRect(x: 0, y: photoTableView.contentSize.height, width: photoTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMorePosts = InfiniteScrollActivityView(frame: frame)
+        loadingMorePosts!.isHidden = true
+        photoTableView.addSubview(loadingMorePosts!)
+        
+        var insets = photoTableView.contentInset
+        insets.bottom += InfiniteScrollActivityView.defaultHeight
+        photoTableView.contentInset = insets
+        
         fetchPhotos()
     }
     
@@ -134,7 +146,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func loadMorePosts() {
-        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV&offset=\(posts.count + 1)")!
+        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV&offset=\(posts.count + 1)&limit=5")!
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         
@@ -154,6 +166,8 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 self.posts += newPosts
                 
+                 self.loadingMorePosts!.stopAnimating()
+                
                 self.photoTableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -169,6 +183,12 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             
             if (scrollView.contentOffset.y > scrollOffsetThreshold && photoTableView.isDragging) {
                 isMoreDataLoading = true
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRect(x: 0, y: photoTableView.contentSize.height, width: photoTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMorePosts?.frame = frame
+                loadingMorePosts!.startAnimating()
+                
                 loadMorePosts()
             }
             
