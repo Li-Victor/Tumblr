@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		572B2B22213795EC00A0587E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572B2B21213795EC00A0587E /* PhotoCell.swift */; };
 		572E3DC12140BF1100608248 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572E3DC02140BF1100608248 /* PhotoDetailsViewController.swift */; };
+		57335EAE21458F0D00E89B4A /* FullScreenPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57335EAD21458F0D00E89B4A /* FullScreenPhotoViewController.swift */; };
 		575A21792144FDFB00E8B889 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575A21782144FDFB00E8B889 /* Post.swift */; };
 		577E4197213785B600B1BB5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577E4196213785B600B1BB5F /* AppDelegate.swift */; };
 		577E419C213785B600B1BB5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 577E419A213785B600B1BB5F /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		572B2B21213795EC00A0587E /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		572E3DC02140BF1100608248 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
+		57335EAD21458F0D00E89B4A /* FullScreenPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPhotoViewController.swift; sourceTree = "<group>"; };
 		575A21782144FDFB00E8B889 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		577E4193213785B600B1BB5F /* Tumblr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tumblr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		577E4196213785B600B1BB5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				572B2B21213795EC00A0587E /* PhotoCell.swift */,
 				572E3DC02140BF1100608248 /* PhotoDetailsViewController.swift */,
 				575A21782144FDFB00E8B889 /* Post.swift */,
+				57335EAD21458F0D00E89B4A /* FullScreenPhotoViewController.swift */,
 			);
 			path = Tumblr;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				577E4197213785B600B1BB5F /* AppDelegate.swift in Sources */,
 				572B2B22213795EC00A0587E /* PhotoCell.swift in Sources */,
 				57BAE026213789BF004480D1 /* PhotosViewController.swift in Sources */,
+				57335EAE21458F0D00E89B4A /* FullScreenPhotoViewController.swift in Sources */,
 				575A21792144FDFB00E8B889 /* Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 642L4VF2C9;
 				INFOPLIST_FILE = Tumblr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -381,6 +386,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 642L4VF2C9;
 				INFOPLIST_FILE = Tumblr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

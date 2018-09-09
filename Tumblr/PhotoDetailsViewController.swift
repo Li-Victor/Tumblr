@@ -12,6 +12,9 @@ import Alamofire
 class PhotoDetailsViewController: UIViewController {
 
     @IBOutlet weak var photoImageView: UIImageView!
+    @IBAction func didTapImage(_ sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "SegueToFullScreenImage", sender: nil)
+    }
     
     var post: Post?
     
@@ -27,6 +30,11 @@ class PhotoDetailsViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let fullScreenPhotoViewController = segue.destination as! FullScreenPhotoViewController
+        fullScreenPhotoViewController.post = post
     }
 
 }
