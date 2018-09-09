@@ -13,11 +13,16 @@ class PhotoDetailsViewController: UIViewController {
 
     @IBOutlet weak var photoImageView: UIImageView!
     
-    var imageURL: URL?
+    var post: Post?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        photoImageView.af_setImage(withURL: imageURL!)
+        
+        if let post = post {
+            let photoURL = URL(string: post.photoPath)!
+            photoImageView.af_setImage(withURL: photoURL)
+        }
+        
         // Do any additional setup after loading the view.
     }
 

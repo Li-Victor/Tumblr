@@ -6,6 +6,7 @@ target 'Tumblr' do
   use_frameworks!
 
   pod 'AlamofireImage', '~> 3.3'
+  pod 'SwiftyJSON', '~> 4.0'
 
   # Pods for Tumblr
 

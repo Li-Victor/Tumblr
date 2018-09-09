@@ -8,10 +8,11 @@
 
 import UIKit
 import AlamofireImage
+import SwiftyJSON
 
 class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var posts: [[String: Any]] = []
+    var posts: [Post] = []
 
     @IBOutlet weak var photoTableView: UITableView!
     var refreshControl: UIRefreshControl!
@@ -41,11 +42,12 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             if let error = error {
                 print(error.localizedDescription)
                 self.displayError(error)
-            } else if let data = data, let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            } else if let data = data {
                 
-                // Get the dictionary from the response key
-                let responseDictionary = dataDictionary["response"] as! [String: Any]
-                self.posts = responseDictionary["posts"] as! [[String: Any]]
+                self.posts = JSON(data)["response", "posts"].arrayValue.map {
+                    return Post(photoPath: $0["photos", 0, "original_size", "url"].stringValue)
+                }
+    
                 self.photoTableView.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -77,13 +79,8 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         let post = self.posts[indexPath.row]
         
-        if let photos = post["photos"] as? [[String: Any]] {
-            let photo = photos[0]
-            let originalSize = photo["original_size"] as! [String: Any]
-            let urlString = originalSize["url"] as! String
-            let url = URL(string: urlString)
-            cell.photoImageView.af_setImage(withURL: url!)
-        }
+        let url = URL(string: post.photoPath)!
+        cell.photoImageView.af_setImage(withURL: url)
         
         return cell
     }
@@ -93,16 +90,8 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         if let indexPath = photoTableView.indexPath(for: cell) {
             
             let post = posts[indexPath.row]
-            
-            if let photos = post["photos"] as? [[String: Any]] {
-                let photo = photos[0]
-                let originalSize = photo["original_size"] as! [String: Any]
-                let postImageURLString = originalSize["url"] as! String
-                let postImageURL = URL(string: postImageURLString)
-                
-                let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
-                photoDetailsViewController.imageURL = postImageURL
-            }
+            let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
+            photoDetailsViewController.post = post
             
         }
     }
