@@ -10,4 +10,5 @@ import Foundation
 
 struct Post {
     let photoPath: String
+    let date: String
 }

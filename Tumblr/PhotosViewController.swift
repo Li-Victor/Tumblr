@@ -45,7 +45,9 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             } else if let data = data {
                 
                 self.posts = JSON(data)["response", "posts"].arrayValue.map {
-                    return Post(photoPath: $0["photos", 0, "original_size", "url"].stringValue)
+                    let photoPath = $0["photos", 0, "original_size", "url"].stringValue
+                    let date = $0["date"].stringValue
+                    return Post(photoPath: photoPath, date: date)
                 }
     
                 self.photoTableView.reloadData()
@@ -71,13 +73,17 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return posts.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.posts.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-        let post = self.posts[indexPath.row]
+        let post = self.posts[indexPath.section]
         
         let url = URL(string: post.photoPath)!
         cell.photoImageView.af_setImage(withURL: url)
@@ -85,11 +91,37 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = 15;
+        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
+        profileView.layer.borderWidth = 1;
+        
+        // Set the avatar
+        profileView.af_setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!)
+        headerView.addSubview(profileView)
+        
+        let post = self.posts[section]
+        let postLabel = UILabel(frame: CGRect(x: 50, y: 10, width: 270, height: 30))
+        postLabel.text = post.date
+        headerView.addSubview(postLabel)
+        
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! UITableViewCell
         if let indexPath = photoTableView.indexPath(for: cell) {
             
-            let post = posts[indexPath.row]
+            let post = posts[indexPath.section]
             let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
             photoDetailsViewController.post = post
             
